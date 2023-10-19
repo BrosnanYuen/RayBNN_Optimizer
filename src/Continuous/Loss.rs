@@ -166,9 +166,9 @@ pub fn weighted_sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z
 
 
 
-pub fn sigmoid_cross_entropy_grad(
-	yhat: &arrayfire::Array<f64>,
-	y: &arrayfire::Array<f64>) -> arrayfire::Array<f64>  {
+pub fn sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint>(
+	yhat: &arrayfire::Array<Z>,
+	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z>  {
 		let minus = one - y.clone();
 
 		let yhatneg =  - yhat.clone();
