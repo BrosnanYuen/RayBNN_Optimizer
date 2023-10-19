@@ -226,4 +226,36 @@ fn test_loss() {
 
 
 
+
+
+
+
+
+
+    let MSE_grad = RayBNN_Optimizer::Continuous::Loss::MSE_grad(&Yhat,&Y);
+
+
+    let mut MSE_grad_act_cpu:Vec<f64> = vec![-1.280000000000000 , -1.800000000000000 ,  1.680000000000000 , 0.0 ,  2.760000000000000];
+    let mut MSE_grad_out_cpu = vec!(f64::default();MSE_grad.elements());
+
+
+    MSE_grad.host(&mut MSE_grad_out_cpu);
+
+    MSE_grad_out_cpu = MSE_grad_out_cpu.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+
+    MSE_grad_act_cpu = MSE_grad_act_cpu.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+
+
+
+    assert_eq!(MSE_grad_act_cpu, MSE_grad_out_cpu);
+
+
+
+
+
+
+
+
+
+
 }
