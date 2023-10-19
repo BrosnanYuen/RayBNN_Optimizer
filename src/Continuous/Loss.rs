@@ -40,9 +40,9 @@ pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint >(
 
 		let diff = yhatmax.cast::<Z>() -  actmax;
 
-		let (r0,_) = arrayfire::sum_all::<f64>(&diff);
+		let (r0,_) = arrayfire::mean_all(&diff);
 
-		(ONE_F64/batch_size_f64)*( r0 )
+		r0
 }
 
 

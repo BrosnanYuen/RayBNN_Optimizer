@@ -36,6 +36,19 @@ fn test_loss() {
 
 
 
+    let mut cross_entropy = RayBNN_Optimizer::Continuous::Loss::softmax_cross_entropy(&Yhat,&Y);
+    let mut cross_entropy_act:f64 =  0.4;
+
+
+    cross_entropy = (cross_entropy * 1000000.0).round() / 1000000.0 ;
+
+    cross_entropy_act = (cross_entropy_act * 1000000.0).round() / 1000000.0 ;
+
+
+    assert_eq!(cross_entropy_act,  cross_entropy);
+
+
+
 
 
 
