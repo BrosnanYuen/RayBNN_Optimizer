@@ -9,6 +9,8 @@ const ZERO_F64: f64 = 0.0;
 
 const HIGH_F64: f64 = 1000000.0;
 
+const epsilon: f64 = 1.0e-13;
+const epsilon2: f64 = 2.0e-13;
 
 
 
@@ -99,16 +101,16 @@ pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint >(
 	
 
 
-		let minus = one - y.clone();
+		let minus = ONE - y.clone();
 		let sigmoid = arrayfire::sigmoid(yhat) + epsilon;
 		let logsigmoid = arrayfire::log(&sigmoid);
-		let minussigmoid = one - sigmoid + epsilon2;
+		let minussigmoid = ONE - sigmoid + epsilon2;
 		let logminus = arrayfire::log(&minussigmoid);
 
 		let total = -( arrayfire::mul(y, &logsigmoid, false) + arrayfire::mul(&minus, &logminus, false)  );
 		let size: f64 = yhat.elements() as f64;
 		let (r0,_) = arrayfire::sum_all::<f64>(&total);
-		(one/size)*(r0 as f64)
+		(ONE/size)*(r0 as f64)
 }
 
 
