@@ -264,10 +264,17 @@ pub fn MAE<Z: arrayfire::FloatingPoint<AbsOutType = Z> >(
 pub fn MSE<Z: arrayfire::FloatingPoint>(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> f64 {
+
+		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	
+		let TWO = arrayfire::constant::<f64>(TWO_F64,single_dims).cast::<Z>();
+
+
+
 		let diff = yhat.clone() - y.clone();
 		let size: f64 = yhat.elements() as f64;
 
-		let diff = arrayfire::pow(&diff,&two,false);
+		let diff = arrayfire::pow(&diff,&TWO,false);
 		let (r0,_) = arrayfire::sum_all::<f64>(&diff);
 		(one/size)*(r0 as f64)
 }
