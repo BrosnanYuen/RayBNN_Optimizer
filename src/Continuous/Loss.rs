@@ -88,9 +88,17 @@ pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, 
 
 
 
-pub fn sigmoid_cross_entropy(
-	yhat: &arrayfire::Array<f64>,
-	y: &arrayfire::Array<f64>) -> f64 {
+pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint >(
+	yhat: &arrayfire::Array<Z>,
+	y: &arrayfire::Array<Z>) -> f64 {
+
+
+		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+
+		let ONE = arrayfire::constant::<f64>(ONE_F64,single_dims).cast::<Z>();
+	
+
+
 		let minus = one - y.clone();
 		let sigmoid = arrayfire::sigmoid(yhat) + epsilon;
 		let logsigmoid = arrayfire::log(&sigmoid);
