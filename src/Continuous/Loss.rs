@@ -90,7 +90,7 @@ pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, 
 
 
 
-pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint >(
+pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> f64 {
 
