@@ -2,9 +2,9 @@ use arrayfire;
 
 
 
-pub fn softmax_cross_entropy(
-	yhat: &arrayfire::Array<f64>,
-	y: &arrayfire::Array<f64>) -> f64 {
+pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint>(
+	yhat: &arrayfire::Array<Z>,
+	y: &arrayfire::Array<Z>) -> Z {
 		let output_size = y.dims()[0];
 		let batch_size = y.dims()[1];
 		let batch_size_f64 = batch_size as f64;
