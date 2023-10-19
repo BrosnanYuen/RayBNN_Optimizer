@@ -9,8 +9,8 @@ const ZERO_F64: f64 = 0.0;
 
 const HIGH_F64: f64 = 1000000.0;
 
-const EPS: f64 = 1.0e-13;
-const EPS2: f64 = 2.0e-13;
+const EPS_F64: f64 = 1.0e-13;
+const EPS2_F64: f64 = 2.0e-13;
 
 
 
@@ -99,7 +99,9 @@ pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint >(
 
 		let ONE = arrayfire::constant::<f64>(ONE_F64,single_dims).cast::<Z>();
 	
-
+		let EPS = arrayfire::constant::<f64>(EPS_F64,single_dims).cast::<Z>();
+		let EPS2 = arrayfire::constant::<f64>(EPS2_F64,single_dims).cast::<Z>();
+	
 
 		let minus = ONE - y.clone();
 		let sigmoid = arrayfire::sigmoid(yhat) + EPS;
