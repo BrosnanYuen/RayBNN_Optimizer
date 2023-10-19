@@ -301,3 +301,9 @@ pub fn MSE_grad<Z: arrayfire::FloatingPoint>(
 
 
 
+pub fn RMSE<Z: arrayfire::FloatingPoint>(
+	yhat: &arrayfire::Array<Z>,
+	y: &arrayfire::Array<Z>) -> f64 {
+		MSE(yhat,y).sqrt()
+}
+
