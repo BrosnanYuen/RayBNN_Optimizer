@@ -291,7 +291,12 @@ pub fn MSE_grad<Z: arrayfire::FloatingPoint>(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 		let size: f64 = yhat.elements() as f64;
-		(two/size)*(yhat.clone() - y.clone())
+
+		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	
+		let twodivsize = arrayfire::constant::<f64>(TWO_F64/size,single_dims).cast::<Z>();
+
+		(twodivsize)*(yhat.clone() - y.clone())
 }
 
 
