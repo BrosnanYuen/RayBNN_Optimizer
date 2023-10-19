@@ -101,7 +101,8 @@ pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOu
 	
 		let EPS = arrayfire::constant::<f64>(EPS_F64,single_dims).cast::<Z>();
 		let EPS2 = arrayfire::constant::<f64>(EPS2_F64,single_dims).cast::<Z>();
-	
+		let ZERO = arrayfire::constant::<f64>(ZERO_F64,single_dims).cast::<Z>();
+
 
 		let minus = ONE - y.clone();
 		let sigmoid = arrayfire::sigmoid(yhat) + EPS;
@@ -109,7 +110,7 @@ pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOu
 		let minussigmoid = ONE - sigmoid + EPS2;
 		let logminus = arrayfire::log(&minussigmoid);
 
-		let total = -( arrayfire::mul(y, &logsigmoid, false) + arrayfire::mul(&minus, &logminus, false)  );
+		let total = ZERO-( arrayfire::mul(y, &logsigmoid, false) + arrayfire::mul(&minus, &logminus, false)  );
 		let size: f64 = yhat.elements() as f64;
 		let (r0,_) = arrayfire::sum_all::<f64>(&total);
 		(ONE/size)*(r0 as f64)
