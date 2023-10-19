@@ -1,6 +1,12 @@
-# RayBNN_Cell
+# RayBNN_Optimizer
 
-Cell posiition generation library for RayBNN using GPUs, CPUs, and FPGAs via CUDA, OpenCL, and oneAPI 
+Gradient Descent Optimizers and Genetic Algorithms using GPUs, CPUs, and FPGAs via CUDA, OpenCL, and oneAPI 
+
+* ADAM
+* SGD
+* Genetic
+* Random Search
+
 
 
 
@@ -21,8 +27,7 @@ rayon = "1.7.0"
 num = "0.4.1"
 num-traits = "0.2.16"
 half = { version = "2.3.1" , features = ["num-traits"] }
-RayBNN_DataLoader = "0.1.3"
-RayBNN_Cell = "0.1.2"
+RayBNN_Optimizer = "0.1.0"
 ```
 
 # List of Examples
