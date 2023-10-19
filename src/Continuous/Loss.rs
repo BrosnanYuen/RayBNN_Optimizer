@@ -219,12 +219,12 @@ pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutTyp
 
 
 
-		let minus = one - y.clone();
+		let minus = ONE - y.clone();
 
 
-		let yhatneg =  - yhat.clone();
+		let yhatneg = ZERO.clone() - yhat.clone();
 		let p0 = arrayfire::sigmoid(&yhatneg);
-		let p1 = -arrayfire::sigmoid(&yhat);
+		let p1 = ZERO -arrayfire::sigmoid(&yhat);
 
 
 		let size: f64 = yhat.elements() as f64;
