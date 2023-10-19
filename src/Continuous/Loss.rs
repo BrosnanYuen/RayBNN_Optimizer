@@ -275,8 +275,9 @@ pub fn MSE<Z: arrayfire::FloatingPoint>(
 		let size: f64 = yhat.elements() as f64;
 
 		let diff = arrayfire::pow(&diff,&TWO,false);
-		let (r0,_) = arrayfire::sum_all::<f64>(&diff);
-		(one/size)*(r0 as f64)
+		let (r0,_) =  arrayfire::mean_all(&diff);
+
+		r0 
 }
 
 
