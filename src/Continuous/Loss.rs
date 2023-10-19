@@ -15,7 +15,7 @@ const EPS2_F64: f64 = 2.0e-13;
 
 
 
-pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint >(
+pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint<InType = Z> >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> f64 {
 		let output_size = y.dims()[0];
@@ -40,7 +40,7 @@ pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint >(
 		actmax = arrayfire::lookup(&actmax, &yidx, 0);
 
 
-		let diff = yhatmax.cast::<Z>() -  actmax;
+		let diff = yhatmax -  actmax;
 
 		let (r0,_) = arrayfire::mean_all(&diff);
 
