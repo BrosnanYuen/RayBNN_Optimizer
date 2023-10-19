@@ -33,57 +33,22 @@ RayBNN_Optimizer = "0.1.0"
 # List of Examples
 
 
-# Generate Cells and Check them for Collisions
+
+
+
+# Types of Loss Functions
 ```
-
-//Generate Random Uniform Cells within a Sphere
-let mut cell_pos: arrayfire::Array<f32>  = RayBNN_Cell::Hidden::Sphere::generate_uniform_sphere_posiiton(&modeldata_float, &modeldata_int);
-
-
-//Get indicies of non colliding cells
-let idx = RayBNN_Cell::Hidden::Sphere::check_cell_collision_minibatch(
-    &modeldata_float, 
-    &cell_pos
-);
-
-let idx = arrayfire::locate(&idx);
-
-//Select non colliding cells
-cell_pos = arrayfire::lookup(&cell_pos, &idx, 0);
-
-```
-
-# Types of cell collision checkers
-```
-//Checks One by one
-let idx = RayBNN_Cell::Hidden::Sphere::check_cell_collision_serial(
-    &modeldata_float, 
-    &cell_pos
-);
-
-//Checks All cells at once
-let idx = RayBNN_Cell::Hidden::Sphere::check_cell_collision_batch(
-    &modeldata_float, 
-    &cell_pos
-);
-
-//Checks in minibatches
-let idx = RayBNN_Cell::Hidden::Sphere::check_cell_collision_minibatch(
-    &modeldata_float, 
-    &cell_pos
-);
-
+let mut cross_entropy = RayBNN_Optimizer::Continuous::Loss::softmax_cross_entropy(&Yhat,&Y);
+let mut cross_entropy_grad = RayBNN_Optimizer::Continuous::Loss::softmax_cross_entropy_grad(&Yhat,&Y);
+let mut cross_entropy = RayBNN_Optimizer::Continuous::Loss::sigmoid_cross_entropy(&Yhat,&Y);
+let mut cross_entropy_grad = RayBNN_Optimizer::Continuous::Loss::sigmoid_cross_entropy_grad(&Yhat,&Y);
+let mut MAE = RayBNN_Optimizer::Continuous::Loss::MAE(&Yhat,&Y);
+let mut MSE = RayBNN_Optimizer::Continuous::Loss::MSE(&Yhat,&Y);
+let MSE_grad = RayBNN_Optimizer::Continuous::Loss::MSE_grad(&Yhat,&Y);
+let mut RMSE = RayBNN_Optimizer::Continuous::Loss::RMSE(&Yhat,&Y);
 ```
 
 
-# Generate Input Neuron Positions
-
-```
-let input_neurons: arrayfire::Array<f64> = RayBNN_Cell::Input::Sphere::create_spaced_neurons_1D(
-    sphere_rad,
-    input_size,
-);
-```
 
 
 
