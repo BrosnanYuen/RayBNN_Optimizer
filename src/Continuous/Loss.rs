@@ -130,7 +130,7 @@ pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOu
 
 
 
-pub fn weighted_sigmoid_cross_entropy<Z: arrayfire::FloatingPoint>(
+pub fn weighted_sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>,
 	weight: f64) -> f64 {
@@ -139,14 +139,17 @@ pub fn weighted_sigmoid_cross_entropy<Z: arrayfire::FloatingPoint>(
 		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
 
 		let ONE = arrayfire::constant::<f64>(ONE_F64,single_dims).cast::<Z>();
-	
+		let EPS = arrayfire::constant::<f64>(EPS_F64,single_dims).cast::<Z>();
+		let EPS2 = arrayfire::constant::<f64>(EPS2_F64,single_dims).cast::<Z>();
+		let ZERO = arrayfire::constant::<f64>(ZERO_F64,single_dims).cast::<Z>();
+
 
 
 
 		let minus = ONE - y.clone();
-		let sigmoid = arrayfire::sigmoid(yhat) + epsilon;
+		let sigmoid = arrayfire::sigmoid(yhat) + EPS;
 		let logsigmoid = arrayfire::log(&sigmoid);
-		let minussigmoid = ONE - sigmoid + epsilon2;
+		let minussigmoid = ONE - sigmoid + EPS2;
 		let logminus = arrayfire::log(&minussigmoid);
 
 		let total = -( (weight*arrayfire::mul(y, &logsigmoid, false)) + arrayfire::mul(&minus, &logminus, false)  );
