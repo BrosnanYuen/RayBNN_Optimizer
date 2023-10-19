@@ -22,7 +22,7 @@ pub fn softmax_cross_entropy_grad(
 
 		let ONE = arrayfire::constant::<f64>(ONE_F64,single_dims).cast::<Z>();
 	
-
+		let ZERO = arrayfire::constant::<f64>(ZERO_F64,single_dims).cast::<Z>();
 
 
 		let output_size = y.dims()[0];
@@ -31,10 +31,10 @@ pub fn softmax_cross_entropy_grad(
 
 
 		let mut expyhat = arrayfire::exp(yhat);
-		expyhat = arrayfire::clamp(&expyhat, &zero, &high, false);
+		expyhat = arrayfire::clamp(&expyhat, &ZERO, &high, false);
 
 		let mut sumyhat = arrayfire::sum(&expyhat,0);
-		sumyhat = arrayfire::clamp(&sumyhat, &zero, &high, false);
+		sumyhat = arrayfire::clamp(&sumyhat, &ZERO, &high, false);
 
 		expyhat = arrayfire::div(&expyhat,&sumyhat, true);
 
