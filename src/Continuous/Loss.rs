@@ -205,10 +205,10 @@ pub fn sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, Un
 
 
 
-pub fn weighted_sigmoid_cross_entropy_grad(
-	yhat: &arrayfire::Array<f64>,
-	y: &arrayfire::Array<f64>,
-	weight: f64) -> arrayfire::Array<f64>  {
+pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z>  >(
+	yhat: &arrayfire::Array<Z>,
+	y: &arrayfire::Array<Z>,
+	weight: f64) -> arrayfire::Array<Z>  {
 
 
 		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
