@@ -20,7 +20,7 @@ pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, 
 
 		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
 
-		let ONE = arrayfire::constant::<f64>(ONE_F64,single_dims).cast::<Z>();
+		//let ONE = arrayfire::constant::<f64>(ONE_F64,single_dims).cast::<Z>();
 	
 		let ZERO = arrayfire::constant::<f64>(ZERO_F64,single_dims).cast::<Z>();
 
@@ -33,6 +33,7 @@ pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, 
 		let batch_size = y.dims()[1];
 		let batch_size_f64 = batch_size as f64;
 
+		let ONEdivbatch_size = arrayfire::constant::<f64>(ONE_F64/batch_size_f64,single_dims).cast::<Z>();
 
 		let mut expyhat = arrayfire::exp(yhat);
 		expyhat = arrayfire::clamp(&expyhat, &ZERO, &HIGH, false);
@@ -43,7 +44,7 @@ pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, 
 		expyhat = arrayfire::div(&expyhat,&sumyhat, true);
 
 
-		(ONE/batch_size_f64)*( expyhat - y )
+		(ONEdivbatch_size)*( expyhat - y )
 }
 
 
