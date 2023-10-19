@@ -18,7 +18,7 @@ pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint >(
 	y: &arrayfire::Array<Z>) -> f64 {
 		let output_size = y.dims()[0];
 		let batch_size = y.dims()[1];
-		let batch_size_f64 = batch_size as f64;
+
 
 		let mut yhatmax = arrayfire::max(yhat,0);
 		yhatmax = arrayfire::transpose(&yhatmax, false);
