@@ -205,4 +205,25 @@ fn test_loss() {
 
 
 
+
+
+
+
+
+    let mut MSE = RayBNN_Optimizer::Continuous::Loss::MSE(&Yhat,&Y);
+
+    let mut MSE_act: f64 = 19.148000000000003;
+
+    MSE = (MSE * 1.0e8).round() / 1.0e8;
+    MSE_act = (MSE_act * 1.0e8).round() / 1.0e8;
+
+
+    assert_eq!(MSE, MSE_act);
+
+
+
+
+
+
+
 }
