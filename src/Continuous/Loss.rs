@@ -121,3 +121,41 @@ pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOu
 
 
 
+
+
+
+
+
+
+
+
+
+pub fn weighted_sigmoid_cross_entropy(
+	yhat: &arrayfire::Array<f64>,
+	y: &arrayfire::Array<f64>,
+	weight: f64) -> f64 {
+		let minus = one - y.clone();
+		let sigmoid = arrayfire::sigmoid(yhat) + epsilon;
+		let logsigmoid = arrayfire::log(&sigmoid);
+		let minussigmoid = one - sigmoid + epsilon2;
+		let logminus = arrayfire::log(&minussigmoid);
+
+		let total = -( (weight*arrayfire::mul(y, &logsigmoid, false)) + arrayfire::mul(&minus, &logminus, false)  );
+		let size: f64 = yhat.elements() as f64;
+		let (r0,_) = arrayfire::sum_all::<f64>(&total);
+		(one/size)*(r0 as f64)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
