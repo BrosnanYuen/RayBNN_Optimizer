@@ -184,7 +184,10 @@ pub fn sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, Un
 		let p1 = ZERO-arrayfire::sigmoid(&yhat);
 
 		let size: f64 = yhat.elements() as f64;
-		(-one/size)*( arrayfire::mul(y, &p0, false)  +    arrayfire::mul(&minus, &p1, false)    )
+		let ONEdivSIZE = arrayfire::constant::<f64>(-ONE_F64/size,single_dims).cast::<Z>();
+
+
+		(ONEdivSIZE)*( arrayfire::mul(y, &p0, false)  +    arrayfire::mul(&minus, &p1, false)    )
 }
 
 
