@@ -261,4 +261,21 @@ pub fn MAE<Z: arrayfire::FloatingPoint<AbsOutType = Z> >(
 
 
 
+pub fn MSE(
+	yhat: &arrayfire::Array<f64>,
+	y: &arrayfire::Array<f64>) -> f64 {
+		let diff = yhat.clone() - y.clone();
+		let size: f64 = yhat.elements() as f64;
+
+		let diff = arrayfire::pow(&diff,&two,false);
+		let (r0,_) = arrayfire::sum_all::<f64>(&diff);
+		(one/size)*(r0 as f64)
+}
+
+
+
+
+
+
+
 
