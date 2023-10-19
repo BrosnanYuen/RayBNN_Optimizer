@@ -148,4 +148,61 @@ fn test_loss() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let Y_cpu: [f64; 5] = [5.3, 4.3 , -3.2, -1.2, 2.1];
+    let Y = arrayfire::Array::new(&Y_cpu, arrayfire::Dim4::new(&[1, 5, 1, 1]));
+
+
+    let Yhat_cpu: [f64; 5] = [2.1, -0.2 , 1.0, -1.2, 9.0];
+    let Yhat = arrayfire::Array::new(&Yhat_cpu, arrayfire::Dim4::new(&[1, 5, 1, 1]));
+
+
+
+
+
+
+
+
+
+
+
+	let mut MAE = RayBNN_Optimizer::Continuous::Loss::MAE(&Yhat,&Y);
+
+    let mut MAE_act: f64 =  3.759999999999999;
+
+    MAE = (MAE * 1.0e8).round() / 1.0e8;
+    MAE_act = (MAE_act * 1.0e8).round() / 1.0e8;
+
+    assert_eq!(MAE, MAE_act);
+
+
+
+
+
 }
