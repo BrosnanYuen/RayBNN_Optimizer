@@ -143,6 +143,7 @@ pub fn weighted_sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z
 		let EPS2 = arrayfire::constant::<f64>(EPS2_F64,single_dims).cast::<Z>();
 		let ZERO = arrayfire::constant::<f64>(ZERO_F64,single_dims).cast::<Z>();
 
+		let weight_Z = arrayfire::constant::<f64>(weight,single_dims).cast::<Z>();
 
 
 
