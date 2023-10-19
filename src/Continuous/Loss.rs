@@ -287,3 +287,12 @@ pub fn MSE<Z: arrayfire::FloatingPoint>(
 
 
 
+pub fn MSE_grad(
+	yhat: &arrayfire::Array<f64>,
+	y: &arrayfire::Array<f64>) -> arrayfire::Array<f64> {
+		let size: f64 = yhat.elements() as f64;
+		(two/size)*(yhat.clone() - y.clone())
+}
+
+
+
