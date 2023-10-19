@@ -261,9 +261,9 @@ pub fn MAE<Z: arrayfire::FloatingPoint<AbsOutType = Z> >(
 
 
 
-pub fn MSE(
-	yhat: &arrayfire::Array<f64>,
-	y: &arrayfire::Array<f64>) -> f64 {
+pub fn MSE<Z: arrayfire::FloatingPoint>(
+	yhat: &arrayfire::Array<Z>,
+	y: &arrayfire::Array<Z>) -> f64 {
 		let diff = yhat.clone() - y.clone();
 		let size: f64 = yhat.elements() as f64;
 
