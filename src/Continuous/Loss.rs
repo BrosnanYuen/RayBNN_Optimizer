@@ -13,7 +13,7 @@ const HIGH_F64: f64 = 1000000.0;
 
 
 
-pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint  >(
+pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, AggregateOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 
