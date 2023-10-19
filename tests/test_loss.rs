@@ -121,4 +121,31 @@ fn test_loss() {
 
 
 
+
+
+
+
+
+
+    let mut cross_entropy_grad = RayBNN_Optimizer::Continuous::Loss::sigmoid_cross_entropy_grad(&Yhat,&Y);
+
+
+    let mut cross_entropy_grad_act_cpu:Vec<f64> = vec![-0.090033200537504  , 0.075508133759629 , -0.057810099474999 , -0.099000033332000 ,  0.095004162504212];
+    let mut cross_entropy_grad_cpu = vec!(f64::default();cross_entropy_grad.elements());
+
+
+    cross_entropy_grad.host(&mut cross_entropy_grad_cpu);
+
+    cross_entropy_grad_cpu = cross_entropy_grad_cpu.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+
+    cross_entropy_grad_act_cpu = cross_entropy_grad_act_cpu.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+
+
+
+    assert_eq!(cross_entropy_grad_act_cpu, cross_entropy_grad_cpu);
+
+
+
+
+
 }
