@@ -73,4 +73,52 @@ fn test_loss() {
     assert_eq!(cross_entropy_grad_act_cpu, cross_entropy_grad_cpu);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    let Y_cpu: [f64; 5] = [1.0,  0.0,  1.0,  1.0,  0.0];
+    let Y = arrayfire::Array::new(&Y_cpu, arrayfire::Dim4::new(&[1, 5, 1, 1]));
+
+
+    let Yhat_cpu: [f64; 5] = [0.2,  -0.5,  0.9,  0.02,  -0.1];
+    let Yhat = arrayfire::Array::new(&Yhat_cpu, arrayfire::Dim4::new(&[1, 5, 1, 1]));
+
+
+
+
+    let mut cross_entropy = RayBNN_Optimizer::Continuous::Loss::sigmoid_cross_entropy(&Yhat,&Y);
+    let mut cross_entropy_act:f64 =  0.548192713618798;
+
+
+    cross_entropy = (cross_entropy * 1000000.0).round() / 1000000.0 ;
+
+    cross_entropy_act = (cross_entropy_act * 1000000.0).round() / 1000000.0 ;
+
+
+    assert_eq!(cross_entropy_act,  cross_entropy);
+
+
+
+
 }
