@@ -31,7 +31,7 @@ pub fn mean_all<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 
 
 
-pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint<InType = Z> >(
+pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint<InType = Z,MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> f64 {
 		let output_size = y.dims()[0];
@@ -67,7 +67,7 @@ pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint<InType = Z> >(
 
 
 
-pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, AggregateOutType = Z>  >(
+pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, AggregateOutType = Z,MeanOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 
@@ -106,7 +106,7 @@ pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, 
 
 
 
-pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z> >(
+pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z, MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> f64 {
 
@@ -145,7 +145,7 @@ pub fn sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOu
 
 
 
-pub fn weighted_sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z>  >(
+pub fn weighted_sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z, MeanOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>,
 	weight: &arrayfire::Array<Z>) -> f64 {
@@ -181,7 +181,7 @@ pub fn weighted_sigmoid_cross_entropy<Z: arrayfire::FloatingPoint<AbsOutType = Z
 
 
 
-pub fn sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z>  >(
+pub fn sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z, MeanOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z>  {
 
@@ -220,7 +220,7 @@ pub fn sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, Un
 
 
 
-pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z>  >(
+pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z, MeanOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>,
 	weight: &arrayfire::Array<Z>) -> arrayfire::Array<Z>  {
@@ -255,7 +255,7 @@ pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutTyp
 
 
 
-pub fn MAE<Z: arrayfire::FloatingPoint<AbsOutType = Z> >(
+pub fn MAE<Z: arrayfire::FloatingPoint<AbsOutType = Z,MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> f64 {
 		let mut diff = yhat.clone() - y.clone();
@@ -275,7 +275,7 @@ pub fn MAE<Z: arrayfire::FloatingPoint<AbsOutType = Z> >(
 
 
 
-pub fn MSE<Z: arrayfire::FloatingPoint>(
+pub fn MSE<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> f64 {
 
@@ -301,7 +301,7 @@ pub fn MSE<Z: arrayfire::FloatingPoint>(
 
 
 
-pub fn MSE_grad<Z: arrayfire::FloatingPoint>(
+pub fn MSE_grad<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 		let size: f64 = yhat.elements() as f64;
@@ -315,7 +315,7 @@ pub fn MSE_grad<Z: arrayfire::FloatingPoint>(
 
 
 
-pub fn RMSE<Z: arrayfire::FloatingPoint>(
+pub fn RMSE<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> f64 {
 		MSE(yhat,y).sqrt()
