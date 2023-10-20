@@ -301,7 +301,7 @@ pub fn MSE<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 
 
 
-pub fn MSE_grad<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
+pub fn MSE_grad<Z: arrayfire::FloatingPoint>(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 		let size: f64 = yhat.elements() as f64;
