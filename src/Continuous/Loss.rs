@@ -33,7 +33,7 @@ pub fn mean_all<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 
 pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint<InType = Z,MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
-	y: &arrayfire::Array<Z>) -> f64 {
+	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 		let output_size = y.dims()[0];
 		let batch_size = y.dims()[1];
 
@@ -58,7 +58,7 @@ pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint<InType = Z,MeanOutType 
 
 		let diff = yhatmax -  actmax;
 
-		let (r0,_) = arrayfire::mean_all(&diff);
+		let r0 = mean_all(&diff);
 
 		r0
 }
