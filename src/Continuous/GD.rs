@@ -11,10 +11,10 @@ const ZERO_F64: f64 = 0.0;
 
 
 
-pub fn momentum(
-	beta: f64
-	,grad: &arrayfire::Array<f64>
-	,dir: &mut arrayfire::Array<f64>)
+pub fn momentum<Z: arrayfire::FloatingPoint>(
+	beta: &arrayfire::Array<Z>
+	,grad: &arrayfire::Array<Z>
+	,dir: &mut arrayfire::Array<Z>)
 	{
 
 		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
@@ -23,7 +23,7 @@ pub fn momentum(
 	
 
 
-		*dir = (dir.clone()*beta)  + (one-beta)*(grad.clone());
+		*dir = (dir.clone()*beta)  + (ONE-beta)*(grad.clone());
 }
 
 
