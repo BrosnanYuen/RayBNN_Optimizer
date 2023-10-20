@@ -207,7 +207,7 @@ pub fn sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, Un
 pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>,
-	weight: f64) -> arrayfire::Array<Z>  {
+	weight: &arrayfire::Array<Z>) -> arrayfire::Array<Z>  {
 
 
 		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
@@ -216,7 +216,6 @@ pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutTyp
 		let ZERO = arrayfire::constant::<f64>(ZERO_F64,single_dims).cast::<Z>();
 
 
-		let weight_Z = arrayfire::constant::<f64>(weight,single_dims).cast::<Z>();
 
 
 		let minus = ONE - y.clone();
@@ -230,7 +229,7 @@ pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutTyp
 		let size: f64 = yhat.elements() as f64;
 		let onedivsize = arrayfire::constant::<f64>(-ONE_F64/size,single_dims).cast::<Z>();
 
-		(onedivsize)*( (weight_Z*arrayfire::mul(y, &p0, false))  +    arrayfire::mul(&minus, &p1, false)    )
+		(onedivsize)*( (weight*arrayfire::mul(y, &p0, false))  +    arrayfire::mul(&minus, &p1, false)    )
 }
 
 
