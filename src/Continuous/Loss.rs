@@ -14,6 +14,22 @@ const EPS2_F64: f64 = 2.0e-13;
 
 
 
+pub fn mean_all<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
+	input: &arrayfire::Array<Z>) -> arrayfire::Array<Z>
+	{
+
+	let mut arr = arrayfire::mean(input,2);
+	arr = arrayfire::mean(&arr,1);
+	arr = arrayfire::mean(&arr,0);
+
+
+	arr
+}
+
+
+
+
+
 
 pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint<InType = Z> >(
 	yhat: &arrayfire::Array<Z>,
