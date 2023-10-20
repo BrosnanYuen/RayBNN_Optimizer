@@ -126,6 +126,7 @@ fn test_loss() {
 
 
     let mut cross_entropy = RayBNN_Optimizer::Continuous::Loss::sigmoid_cross_entropy(&Yhat,&Y);
+    let (mut cross_entropy,_) = arrayfire::mean_all(&cross_entropy);
     let mut cross_entropy_act:f64 =  0.548192713618798;
 
 
