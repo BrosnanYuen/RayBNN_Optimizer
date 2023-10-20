@@ -9,8 +9,8 @@ const ZERO_F64: f64 = 0.0;
 
 
 pub fn adam<Z: arrayfire::FloatingPoint>(
-	beta0: f64
-	,beta1: f64
+	beta0: &arrayfire::Array<Z>
+	,beta1: &arrayfire::Array<Z>
 	,direction: &mut arrayfire::Array<Z>
 	,mt: &mut arrayfire::Array<Z>
 	,vt: &mut arrayfire::Array<Z>)
