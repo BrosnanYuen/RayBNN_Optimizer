@@ -17,6 +17,14 @@ fn test_loss() {
     arrayfire::set_backend(BACK_END);
     arrayfire::set_device(DEVICE);
 
+    let test_cpu: Vec<f64> = vec![3.0, -2.0, 5.0, 8.0,       9.0, 5.0, -7.0, -3.0,       1.2, 3.5, -0.6, -0.8,       3.5, -2.3, 5.11, 8.4,        9.4, 5.9, -7.7, -3.40,       1.25, 3.5, -2.65, -3.8,];
+    let test = arrayfire::Array::new(&test_cpu, arrayfire::Dim4::new(&[3, 4, 2, 1]));
+
+    let mut mean = RayBNN_Optimizer::Continuous::Loss::mean_all(&test);
+
+
+
+
 
 
 
