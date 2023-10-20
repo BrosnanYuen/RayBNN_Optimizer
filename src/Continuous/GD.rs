@@ -19,10 +19,11 @@ pub fn adam<Z: arrayfire::FloatingPoint>(
 		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
 
 		let ONE = arrayfire::constant::<f64>(ONE_F64,single_dims).cast::<Z>();
-	
+		let TWO = arrayfire::constant::<f64>(TWO_F64,single_dims).cast::<Z>();
+
 
 		*mt = (mt.clone())*beta0  + (ONE-beta0)*(direction.clone());
-		*vt =  (vt.clone())*beta1  + (ONE-beta1)*arrayfire::pow(direction,&two,false);
+		*vt =  (vt.clone())*beta1  + (ONE-beta1)*arrayfire::pow(direction,&TWO,false);
 
 		let nmt = mt.clone()/(ONE-beta0);
 		let mut nvt = vt.clone()/(ONE-beta1);
