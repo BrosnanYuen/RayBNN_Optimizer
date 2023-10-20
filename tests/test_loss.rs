@@ -230,7 +230,7 @@ fn test_loss() {
 
 
     let mut MSE = RayBNN_Optimizer::Continuous::Loss::MSE(&Yhat,&Y);
-
+    let (mut MSE,_) = arrayfire::mean_all(&MSE);
     let mut MSE_act: f64 = 19.148000000000003;
 
     MSE = (MSE * 1.0e8).round() / 1.0e8;
@@ -282,7 +282,7 @@ fn test_loss() {
 
 
 	let mut RMSE = RayBNN_Optimizer::Continuous::Loss::RMSE(&Yhat,&Y);
-
+    let (mut RMSE,_) = arrayfire::mean_all(&RMSE);
     let mut RMSE_act: f64 =  4.375842775968991;
 
     RMSE = (RMSE * 1.0e8).round() / 1.0e8;
