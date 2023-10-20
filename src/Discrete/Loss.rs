@@ -10,12 +10,12 @@ use arrayfire;
 
 
 pub fn BTLS<Z: arrayfire::FloatingPoint >(
-	loss: impl Fn(&arrayfire::Array<f64>) -> f64
-	,loss_grad: impl Fn(&arrayfire::Array<f64>) -> arrayfire::Array<f64>
-	,init_point: &arrayfire::Array<f64>
-	,direction: &arrayfire::Array<f64>
-	,gamma: f64
-	,rho: f64) -> f64
+	loss: impl Fn(&arrayfire::Array<Z>) -> arrayfire::Array<Z>
+	,loss_grad: impl Fn(&arrayfire::Array<Z>) -> arrayfire::Array<Z>
+	,init_point: &arrayfire::Array<Z>
+	,direction: &arrayfire::Array<Z>
+	,gamma: arrayfire::Array<Z>
+	,rho: arrayfire::Array<Z>) -> arrayfire::Array<Z>
 	{
 		let mut alpha: f64 = LR_MAX;
 		let init_loss = loss(init_point);
