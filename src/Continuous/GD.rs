@@ -28,10 +28,10 @@ pub fn adam<Z: arrayfire::FloatingPoint<UnaryOutType = Z> >(
 		let EPS = arrayfire::constant::<f64>(EPS_F64,single_dims).cast::<Z>();
 
 
-		*mt = (mt.clone())*beta0  + (ONE-beta0)*(direction.clone());
-		*vt =  (vt.clone())*beta1  + (ONE-beta1)*arrayfire::pow(direction,&TWO,false);
+		*mt = (mt.clone())*beta0  + (ONE.clone()-beta0)*(direction.clone());
+		*vt =  (vt.clone())*beta1  + (ONE.clone()-beta1)*arrayfire::pow(direction,&TWO,false);
 
-		let nmt = mt.clone()/(ONE-beta0);
+		let nmt = mt.clone()/(ONE.clone()-beta0);
 		let mut nvt = vt.clone()/(ONE-beta1);
 		nvt = arrayfire::sqrt(&nvt) + EPS;
 
