@@ -8,7 +8,7 @@ use arrayfire;
 
 
 
-pub fn BTLS(
+pub fn BTLS<Z: arrayfire::FloatingPoint>(
 	loss: impl Fn(&arrayfire::Array<f64>) -> f64
 	,loss_grad: impl Fn(&arrayfire::Array<f64>) -> arrayfire::Array<f64>
 	,init_point: &arrayfire::Array<f64>
