@@ -67,7 +67,7 @@ pub fn softmax_cross_entropy<Z: arrayfire::FloatingPoint<InType = Z,MeanOutType 
 
 
 
-pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, AggregateOutType = Z,MeanOutType = Z>  >(
+pub fn softmax_cross_entropy_grad<Z: arrayfire::FloatingPoint<UnaryOutType = Z, AggregateOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 
