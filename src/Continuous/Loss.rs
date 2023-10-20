@@ -315,9 +315,12 @@ pub fn MSE_grad<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 
 
 
-pub fn RMSE<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
+pub fn RMSE<Z: arrayfire::FloatingPoint<MeanOutType = Z, UnaryOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
-	y: &arrayfire::Array<Z>) -> f64 {
-		MSE(yhat,y).sqrt()
+	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
+		let MSE = MSE(yhat,y);
+		arrayfire::sqrt(&MSE)
 }
+
+
 
