@@ -8,12 +8,12 @@ const ZERO_F64: f64 = 0.0;
 
 
 
-pub fn adam(
+pub fn adam<Z: arrayfire::FloatingPoint>(
 	beta0: f64
 	,beta1: f64
-	,direction: &mut arrayfire::Array<f64>
-	,mt: &mut arrayfire::Array<f64>
-	,vt: &mut arrayfire::Array<f64>)
+	,direction: &mut arrayfire::Array<Z>
+	,mt: &mut arrayfire::Array<Z>
+	,vt: &mut arrayfire::Array<Z>)
 	{
 
 		*mt = (mt.clone())*beta0  + (one-beta0)*(direction.clone());
