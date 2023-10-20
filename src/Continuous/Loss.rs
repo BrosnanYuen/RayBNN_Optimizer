@@ -272,7 +272,7 @@ pub fn MSE<Z: arrayfire::FloatingPoint>(
 
 
 		let diff = yhat.clone() - y.clone();
-		let size: f64 = yhat.elements() as f64;
+		
 
 		let diff = arrayfire::pow(&diff,&TWO,false);
 		let (r0,_) =  arrayfire::mean_all(&diff);
