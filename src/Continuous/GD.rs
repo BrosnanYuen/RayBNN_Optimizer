@@ -16,11 +16,16 @@ pub fn adam<Z: arrayfire::FloatingPoint>(
 	,vt: &mut arrayfire::Array<Z>)
 	{
 
-		*mt = (mt.clone())*beta0  + (one-beta0)*(direction.clone());
-		*vt =  (vt.clone())*beta1  + (one-beta1)*arrayfire::pow(direction,&two,false);
+		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
 
-		let nmt = mt.clone()/(one-beta0);
-		let mut nvt = vt.clone()/(one-beta1);
+		let ONE = arrayfire::constant::<f64>(ONE_F64,single_dims).cast::<Z>();
+	
+
+		*mt = (mt.clone())*beta0  + (ONE-beta0)*(direction.clone());
+		*vt =  (vt.clone())*beta1  + (ONE-beta1)*arrayfire::pow(direction,&two,false);
+
+		let nmt = mt.clone()/(ONE-beta0);
+		let mut nvt = vt.clone()/(ONE-beta1);
 		nvt = arrayfire::sqrt(&nvt) + epsilon;
 
 		*direction = (nmt/nvt);
