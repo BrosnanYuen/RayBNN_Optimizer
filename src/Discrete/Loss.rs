@@ -15,9 +15,10 @@ pub fn BTLS<Z: arrayfire::FloatingPoint >(
 	,init_point: &arrayfire::Array<Z>
 	,direction: &arrayfire::Array<Z>
 	,gamma: &arrayfire::Array<Z>
-	,rho: &arrayfire::Array<Z>) -> arrayfire::Array<Z>
+	,rho: &arrayfire::Array<Z>
+    ,alpha_max: &arrayfire::Array<Z>) -> arrayfire::Array<Z>
 	{
-		let mut alpha = LR_MAX;
+		let mut alpha = alpha_max.clone();
 		let init_loss = loss(init_point);
 
 		let mut next_point = init_point.clone() + (alpha)*direction.clone();
