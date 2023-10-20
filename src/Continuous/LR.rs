@@ -8,11 +8,14 @@ use arrayfire;
 
 
 
+
+
+
 pub fn BTLS<Z: arrayfire::FloatingPoint>(
-	loss: impl Fn(&arrayfire::Array<f64>) -> f64
-	,loss_grad: impl Fn(&arrayfire::Array<f64>) -> arrayfire::Array<f64>
-	,init_point: &arrayfire::Array<f64>
-	,direction: &arrayfire::Array<f64>
+	loss: impl Fn(&arrayfire::Array<Z>) -> f64
+	,loss_grad: impl Fn(&arrayfire::Array<Z>) -> arrayfire::Array<Z>
+	,init_point: &arrayfire::Array<Z>
+	,direction: &arrayfire::Array<Z>
 	,gamma: f64
 	,rho: f64) -> f64
 	{
@@ -36,6 +39,9 @@ pub fn BTLS<Z: arrayfire::FloatingPoint>(
 		}
 		alpha
 }
+
+
+
 
 
 
