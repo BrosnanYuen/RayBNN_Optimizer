@@ -220,7 +220,7 @@ pub fn sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, Un
 
 
 
-pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z, MeanOutType = Z>  >(
+pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutType = Z, UnaryOutType = Z>  >(
 	yhat: &arrayfire::Array<Z>,
 	y: &arrayfire::Array<Z>,
 	weight: &arrayfire::Array<Z>) -> arrayfire::Array<Z>  {
