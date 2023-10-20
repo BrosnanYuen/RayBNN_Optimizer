@@ -9,7 +9,7 @@ use arrayfire;
 
 
 
-pub fn BTLS<Z: arrayfire::FloatingPoint >(
+pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >(
 	loss: impl Fn(&arrayfire::Array<Z>) -> arrayfire::Array<Z>
 	,loss_grad: impl Fn(&arrayfire::Array<Z>) -> arrayfire::Array<Z>
 	,init_point: &arrayfire::Array<Z>
@@ -26,8 +26,12 @@ pub fn BTLS<Z: arrayfire::FloatingPoint >(
 
 		let init_grad = loss_grad(init_point);
 		let v0 = rho*(arrayfire::mul(direction, &init_grad, false));
-		let (t0,t1) = arrayfire::sum_all(&v0);
-		let mut f1  = init_loss.clone() + (alpha)*t0;
+		//let (t0,t1) = arrayfire::sum_all(&v0);
+		let mut t0 = arrayfire::sum(&v0, 2);
+        t0 = arrayfire::sum(&t0, 1);
+        t0 = arrayfire::sum(&t0, 0);
+        
+        let mut f1  = init_loss.clone() + (alpha)*t0;
 
 		while (f0 > f1)
 		{
