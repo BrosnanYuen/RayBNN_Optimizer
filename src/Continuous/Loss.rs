@@ -277,7 +277,7 @@ pub fn MAE<Z: arrayfire::FloatingPoint<AbsOutType = Z,MeanOutType = Z> >(
 
 pub fn MSE<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
-	y: &arrayfire::Array<Z>) -> f64 {
+	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 
 		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
 	
@@ -289,7 +289,7 @@ pub fn MSE<Z: arrayfire::FloatingPoint<MeanOutType = Z> >(
 		
 
 		let diff = arrayfire::pow(&diff,&TWO,false);
-		let (r0,_) =  arrayfire::mean_all(&diff);
+		let r0 = mean_all(&diff);
 
 		r0 
 }
