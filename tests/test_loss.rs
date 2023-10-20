@@ -212,7 +212,7 @@ fn test_loss() {
 
 
 	let mut MAE = RayBNN_Optimizer::Continuous::Loss::MAE(&Yhat,&Y);
-
+    let (mut MAE,_) = arrayfire::mean_all(&MAE);
     let mut MAE_act: f64 =  3.759999999999999;
 
     MAE = (MAE * 1.0e8).round() / 1.0e8;

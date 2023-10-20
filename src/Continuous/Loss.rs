@@ -257,12 +257,12 @@ pub fn weighted_sigmoid_cross_entropy_grad<Z: arrayfire::FloatingPoint<AbsOutTyp
 
 pub fn MAE<Z: arrayfire::FloatingPoint<AbsOutType = Z,MeanOutType = Z> >(
 	yhat: &arrayfire::Array<Z>,
-	y: &arrayfire::Array<Z>) -> f64 {
+	y: &arrayfire::Array<Z>) -> arrayfire::Array<Z> {
 		let mut diff = yhat.clone() - y.clone();
 
 		diff = arrayfire::abs(&diff);
 
-		let (r0,_) =  arrayfire::mean_all(&diff);
+		let r0 =  mean_all(&diff);
 
 		r0 
 }
