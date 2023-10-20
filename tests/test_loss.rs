@@ -22,7 +22,10 @@ fn test_loss() {
 
     let mut mean = RayBNN_Optimizer::Continuous::Loss::mean_all(&test);
 
+    let mut mean_cpu = vec!(f64::default();mean.elements());
+    mean.host(&mut mean_cpu);
 
+    assert_eq!(mean_cpu[0], 1.604583333333333);
 
 
 
