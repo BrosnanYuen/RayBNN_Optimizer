@@ -57,7 +57,7 @@ fn test_loss() {
 	let mut mt = arrayfire::constant::<f64>(0.0,direction.dims());
 	let mut vt = arrayfire::constant::<f64>(0.0,direction.dims());
 
-	let mut alpha = 2.0;
+	let mut alpha = arrayfire::constant::<f64>(1.0,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 	let mut next_point = point.clone();
 	let mut newdirection = direction.clone();
 
@@ -78,9 +78,9 @@ fn test_loss() {
 			,loss_grad
 			,&point
 			,&direction
-			,gamma
-			,rho
-			,alpha_max
+			,&gamma
+			,&rho
+			,&alpha_max
         );
 
 
