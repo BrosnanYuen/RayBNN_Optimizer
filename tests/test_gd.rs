@@ -60,6 +60,11 @@ fn test_loss() {
 	let mut alpha = 2.0;
 	let mut next_point = point.clone();
 	let mut newdirection = direction.clone();
+
+
+
+    let alpha_max = arrayfire::constant::<f64>(1.0,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+
 	for i in 0..400
 	{
         
@@ -70,6 +75,7 @@ fn test_loss() {
 			,&direction
 			,0.5
 			,0.1
+			,alpha_max
         );
 
 
