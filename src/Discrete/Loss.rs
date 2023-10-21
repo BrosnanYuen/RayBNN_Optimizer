@@ -45,6 +45,10 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >(
 			next_point = init_point.clone() + (alpha)*direction.clone();
 			f0  = loss(&next_point);
 			f1  = init_loss.clone() + (alpha)*t0;
+
+
+            ret = arrayfire::gt(&f0,&f1, false);
+            ret_cpu = arrayfire::any_true_all(&ret).0;
 		}
 		alpha
 }
