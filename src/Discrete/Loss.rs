@@ -21,7 +21,7 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >(
 		let mut alpha = alpha_max.clone();
 		let init_loss = loss(init_point);
 
-		let mut next_point = init_point.clone() + (alpha)*direction.clone();
+		let mut next_point = init_point.clone() + (alpha.clone())*direction.clone();
 		let mut f0  = loss(&next_point);
 
 		let init_grad = loss_grad(init_point);
@@ -31,7 +31,7 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >(
         t0 = arrayfire::sum(&t0, 1);
         t0 = arrayfire::sum(&t0, 0);
         
-        let mut f1  = init_loss.clone() + (alpha)*t0;
+        let mut f1  = init_loss.clone() + (alpha.clone())*t0.clone();
 
 
         let mut ret = arrayfire::gt(&f0,&f1, false);
@@ -41,10 +41,10 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >(
 
 		while (ret_cpu)
 		{
-			alpha = (alpha)*gamma;
-			next_point = init_point.clone() + (alpha)*direction.clone();
+			alpha = (alpha.clone())*gamma;
+			next_point = init_point.clone() + (alpha.clone())*direction.clone();
 			f0  = loss(&next_point);
-			f1  = init_loss.clone() + (alpha)*t0;
+			f1  = init_loss.clone() + (alpha.clone())*t0.clone();
 
 
             ret = arrayfire::gt(&f0,&f1, false);
