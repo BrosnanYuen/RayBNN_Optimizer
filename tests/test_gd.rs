@@ -65,6 +65,11 @@ fn test_loss() {
 
     let alpha_max = arrayfire::constant::<f64>(1.0,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 
+
+    let gamma = arrayfire::constant::<f64>(0.5,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+
+    let rho = arrayfire::constant::<f64>(0.1,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+
 	for i in 0..400
 	{
         
@@ -73,8 +78,8 @@ fn test_loss() {
 			,loss_grad
 			,&point
 			,&direction
-			,0.5
-			,0.1
+			,gamma
+			,rho
 			,alpha_max
         );
 
