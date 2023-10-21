@@ -76,10 +76,11 @@ fn test_loss() {
 
 
 
-		clusterdiffeq::optimal::gd_f64::momentum(
-				0.9
-				,&direction
-				,&mut newdirection);
+		RayBNN_Optimizer::Continuous::GD::momentum(
+            0.9
+            ,&direction
+            ,&mut newdirection
+        );
         direction = newdirection.clone();
 
 	}
