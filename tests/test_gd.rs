@@ -27,13 +27,15 @@ fn test_loss() {
 	let x0_cpu: [f64; 2] = [2.0, 3.0];
 	let x0 = arrayfire::Array::new(&x0_cpu, arrayfire::Dim4::new(&[1, n, 1, 1]));
 
-	let loss = |x: &arrayfire::Array<f64>| -> f64 {
+	let loss = |x: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
 		let mut z = vec!(f64::default();x.elements());
 		x.host(&mut z);
 		let x1 = z[0];
 		let x2 = z[1];
-		(( (x1*x2) -x1 +1.5).powf(2.0)) + (( (x1*(x2.powf(2.0))) -x1 +2.25 ).powf(2.0)) + (( (x1*(x2.powf(3.0))) -x1 +2.625 ).powf(2.0))
-	};
+		let ret = (( (x1*x2) -x1 +1.5).powf(2.0)) + (( (x1*(x2.powf(2.0))) -x1 +2.25 ).powf(2.0)) + (( (x1*(x2.powf(3.0))) -x1 +2.625 ).powf(2.0));
+	
+        arrayfire::constant::<f64>(ret,arrayfire::Dim4::new(&[1, 1, 1, 1]))
+    };
 
 	let loss_grad = |x: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
 		let mut z = vec!(f64::default();x.elements());
