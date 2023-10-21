@@ -32,9 +32,9 @@ fn test_loss() {
 		x.host(&mut z);
 		let x1 = z[0];
 		let x2 = z[1];
-		let ret = (( (x1*x2) -x1 +1.5).powf(2.0)) + (( (x1*(x2.powf(2.0))) -x1 +2.25 ).powf(2.0)) + (( (x1*(x2.powf(3.0))) -x1 +2.625 ).powf(2.0));
+		let ret = vec![ (( (x1*x2) -x1 +1.5).powf(2.0)) + (( (x1*(x2.powf(2.0))) -x1 +2.25 ).powf(2.0)) + (( (x1*(x2.powf(3.0))) -x1 +2.625 ).powf(2.0))];
 	
-        arrayfire::constant::<f64>(ret,arrayfire::Dim4::new(&[1, 1, 1, 1]))
+        arrayfire::Array::new(&ret, arrayfire::Dim4::new(&[1, 1, 1, 1]))
     };
 
 	let loss_grad = |x: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
