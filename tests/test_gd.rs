@@ -60,14 +60,15 @@ fn test_loss() {
 	let mut newdirection = direction.clone();
 	for i in 0..400
 	{
-
-		alpha = clusterdiffeq::optimal::control_f64::BTLS(
+        
+		alpha = RayBNN_Optimizer::Continuous::LR::BTLS(
 			loss
 			,loss_grad
 			,&point
 			,&direction
 			,0.5
-			,0.1);
+			,0.1
+        );
 
 
 		point = point.clone()  + alpha*direction.clone();
