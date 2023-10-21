@@ -35,11 +35,11 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >(
 
 
         let mut ret = arrayfire::gt(&f0,&f1, false);
-        let (mut ret_cpu,_ ) = arrayfire::any_true_all(&ret);
+        let mut ret_cpu = arrayfire::any_true_all(&ret).0;
     
 
 
-		while (f0 > f1)
+		while (ret_cpu)
 		{
 			alpha = (alpha)*gamma;
 			next_point = init_point.clone() + (alpha)*direction.clone();
