@@ -70,6 +70,11 @@ fn test_loss() {
 
     let rho = arrayfire::constant::<f64>(0.1,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 
+
+
+
+	let beta = arrayfire::constant::<f64>(0.9,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+
 	for i in 0..400
 	{
         
@@ -90,7 +95,7 @@ fn test_loss() {
 
 
 		RayBNN_Optimizer::Continuous::GD::momentum(
-            0.9
+            &beta
             ,&direction
             ,&mut newdirection
         );
