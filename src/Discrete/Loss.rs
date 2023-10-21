@@ -33,6 +33,12 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >(
         
         let mut f1  = init_loss.clone() + (alpha)*t0;
 
+
+        let mut ret = arrayfire::gt(&f0,&f1, false);
+        let (mut ret_cpu,_ ) = arrayfire::any_true_all(&ret);
+    
+
+
 		while (f0 > f1)
 		{
 			alpha = (alpha)*gamma;
