@@ -33,7 +33,89 @@ RayBNN_Optimizer = "0.1.0"
 # List of Examples
 
 
+# Optimizing values for a loss function
+```
 
+//Define Starting Point for optimization
+let x0_cpu = vec![0.1, 0.4, 0.5,   -1.2, 0.7];
+let x0_dims = arrayfire::Dim4::new(&[1, x0_cpu.len() as u64, 1, 1]);
+let x0 = arrayfire::Array::new(&x0_cpu, x0_dims);
+
+//Define the loss function
+let y_cpu = vec![-1.1, 0.4, 2.0,    2.1, 4.0];
+let y = arrayfire::Array::new(&y_cpu, x0_dims);
+
+//Define the loss function
+let loss = |yhat: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
+    RayBNN_Optimizer::Continuous::Loss::MSE(yhat, &y)
+};
+
+//Define the gradient of the loss function
+let loss_grad = |yhat: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
+    RayBNN_Optimizer::Continuous::Loss::MSE_grad(yhat, &y)
+};
+
+
+let mut point = x0.clone();
+let mut direction = -loss_grad(&point);
+let mut mt = arrayfire::constant::<f64>(0.0,direction.dims());
+let mut vt = arrayfire::constant::<f64>(0.0,direction.dims());
+
+let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+let mut alpha = arrayfire::constant::<f64>(1.0,single_dims);
+
+let alpha_max = arrayfire::constant::<f64>(1.0,single_dims);
+
+let v = 30;
+let N_dims = arrayfire::Dim4::new(&[v,1,1,1]);
+let mut alpha_arr = arrayfire::constant::<f64>(0.5,N_dims);
+
+let rho = arrayfire::constant::<f64>(0.1,single_dims);
+
+let exponent = arrayfire::iota::<f64>(N_dims,single_dims);
+
+alpha_arr = arrayfire::pow(&alpha_arr,&exponent, false);
+
+let mut alpha_vec = vec!(f64::default();alpha_arr.elements());
+alpha_arr.host(&mut alpha_vec);
+
+
+let beta0 = arrayfire::constant::<f64>(0.9,single_dims);
+let beta1 = arrayfire::constant::<f64>(0.999,single_dims);
+
+//Optimization Loop
+for i in 0..120
+{
+    alpha = alpha_max.clone();
+    //Automatically Determine Optimal Step Size using BTLS
+    RayBNN_Optimizer::Continuous::LR::BTLS(
+        loss
+        ,loss_grad
+        ,&point
+        ,&direction
+        ,&alpha_vec
+        ,&rho
+        ,&mut alpha
+    );
+
+    //Update current point
+    point = point.clone()  + alpha*direction.clone();
+    direction = -loss_grad(&point);
+
+
+
+    //Use ADAM optimizer
+    RayBNN_Optimizer::Continuous::GD::adam(
+        &beta0
+        ,&beta1
+        ,&mut direction
+        ,&mut mt
+        ,&mut vt
+    );
+
+}
+
+```
 
 
 # Types of Loss Functions
