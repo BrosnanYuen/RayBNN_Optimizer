@@ -101,7 +101,7 @@ fn test_loss() {
 		point = point.clone()  + alpha*direction.clone();
 		direction = -loss_grad(&point);
 
-		//arrayfire::print_gen("point".to_string(), &point,Some(30));
+
 
 
 		RayBNN_Optimizer::Continuous::GD::momentum(
