@@ -1,8 +1,8 @@
 #![allow(unused_parens)]
 #![allow(non_snake_case)]
 
-extern crate arrayfire;
-extern crate clusterdiffeq;
+use arrayfire;
+
 
 const BACK_END: arrayfire::Backend = arrayfire::Backend::CUDA;
 const DEVICE: i32 = 0;
@@ -19,17 +19,22 @@ fn test_gd2() {
 
 
 
+
+
 	let n: u64 = 2;
+	let v = 30;
 	let x0_cpu: [f64; 2] = [2.0, 3.0];
 	let x0 = arrayfire::Array::new(&x0_cpu, arrayfire::Dim4::new(&[1, n, 1, 1]));
 
-	let loss = |x: &arrayfire::Array<f64>| -> f64 {
+	let loss = |x: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
 		let mut z = vec!(f64::default();x.elements());
 		x.host(&mut z);
 		let x1 = z[0];
 		let x2 = z[1];
-		(( (x1*x2) -x1 +1.5).powf(2.0)) + (( (x1*(x2.powf(2.0))) -x1 +2.25 ).powf(2.0)) + (( (x1*(x2.powf(3.0))) -x1 +2.625 ).powf(2.0))
-	};
+		let ret = vec![ (( (x1*x2) -x1 +1.5).powf(2.0)) + (( (x1*(x2.powf(2.0))) -x1 +2.25 ).powf(2.0)) + (( (x1*(x2.powf(3.0))) -x1 +2.625 ).powf(2.0))];
+	
+        arrayfire::Array::new(&ret, arrayfire::Dim4::new(&[1, 1, 1, 1]))
+    };
 
 	let loss_grad = |x: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
 		let mut z = vec!(f64::default();x.elements());
@@ -51,29 +56,58 @@ fn test_gd2() {
 	let mut mt = arrayfire::constant::<f64>(0.0,direction.dims());
 	let mut vt = arrayfire::constant::<f64>(0.0,direction.dims());
 
-	let mut alpha = 2.0;
-	for i in 0..120
-	{
+	let mut alpha = arrayfire::constant::<f64>(1.0,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+	let mut next_point = point.clone();
+	let mut newdirection = direction.clone();
 
-		alpha = clusterdiffeq::optimal::control_f64::BTLS(
+
+
+    let alpha_max = arrayfire::constant::<f64>(1.0,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+
+	let N_dims = arrayfire::Dim4::new(&[v,1,1,1]);
+    let mut alpha_arr = arrayfire::constant::<f64>(0.5,N_dims);
+
+    let rho = arrayfire::constant::<f64>(0.1,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+
+
+	let repeat_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	let exponent = arrayfire::iota::<f64>(N_dims,repeat_dims);
+
+	alpha_arr = arrayfire::pow(&alpha_arr,&exponent, false);
+
+	let mut alpha_vec = vec!(f64::default();alpha_arr.elements());
+	alpha_arr.host(&mut alpha_vec);
+
+
+
+	let beta = arrayfire::constant::<f64>(0.9,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+
+	for i in 0..400
+	{
+        alpha = alpha_max.clone();
+		RayBNN_Optimizer::Continuous::LR::BTLS(
 			loss
 			,loss_grad
 			,&point
 			,&direction
-			,0.5
-			,0.1);
+			,&alpha_vec
+			,&rho
+			,&mut alpha
+        );
 
 
 		point = point.clone()  + alpha*direction.clone();
 		direction = -loss_grad(&point);
 
 
-		clusterdiffeq::optimal::gd_f64::adam(
-			0.9
-			,0.999
-			,&mut direction
-			,&mut mt
-			,&mut vt);
+
+
+		RayBNN_Optimizer::Continuous::GD::adam(
+            &beta
+            ,&direction
+            ,&mut newdirection
+        );
+        direction = newdirection.clone();
 
 	}
 
@@ -85,12 +119,15 @@ fn test_gd2() {
 
     point.host(&mut point_cpu);
 
-    point_cpu = point_cpu.par_iter().map(|x|  (x * 100.0).round() / 100.0 ).collect::<Vec<f64>>();
+    point_cpu = point_cpu.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
 
-    point_act = point_act.par_iter().map(|x|  (x * 100.0).round() / 100.0 ).collect::<Vec<f64>>();
+    point_act = point_act.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
 
 
     assert_eq!(point_act, point_cpu);
+
+
+
 
 
 
