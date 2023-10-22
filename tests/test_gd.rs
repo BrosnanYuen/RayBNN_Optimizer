@@ -24,6 +24,7 @@ fn test_loss() {
 
 
 	let n: u64 = 2;
+	let v = 30;
 	let x0_cpu: [f64; 2] = [2.0, 3.0];
 	let x0 = arrayfire::Array::new(&x0_cpu, arrayfire::Dim4::new(&[1, n, 1, 1]));
 
@@ -65,11 +66,19 @@ fn test_loss() {
 
     let alpha_max = arrayfire::constant::<f64>(1.0,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 
-
-    let gamma = arrayfire::constant::<f64>(0.5,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+	let N_dims = arrayfire::Dim4::new(&[v,1,1,1]);
+    let mut alpha_arr = arrayfire::constant::<f64>(0.5,N_dims);
 
     let rho = arrayfire::constant::<f64>(0.1,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 
+
+	let repeat_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	let exponent = arrayfire::iota::<f64>(N_dims,repeat_dims);
+
+	alpha_arr = arrayfire::pow(&alpha_arr,&exponent, false);
+
+	let mut alpha_vec = vec!(f64::default();alpha_arr.elements());
+	alpha_arr.host(&mut alpha_vec);
 
 
 
@@ -83,7 +92,7 @@ fn test_loss() {
 			,loss_grad
 			,&point
 			,&direction
-			,&gamma
+			,&alpha_vec
 			,&rho
 			,&mut alpha
         );
@@ -92,6 +101,7 @@ fn test_loss() {
 		point = point.clone()  + alpha*direction.clone();
 		direction = -loss_grad(&point);
 
+		//arrayfire::print_gen("point".to_string(), &point,Some(30));
 
 
 		RayBNN_Optimizer::Continuous::GD::momentum(
