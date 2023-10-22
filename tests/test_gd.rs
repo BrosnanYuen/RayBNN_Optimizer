@@ -77,15 +77,15 @@ fn test_loss() {
 
 	for i in 0..400
 	{
-        
-		alpha = RayBNN_Optimizer::Continuous::LR::BTLS(
+        alpha = alpha_max.clone();
+		RayBNN_Optimizer::Continuous::LR::BTLS(
 			loss
 			,loss_grad
 			,&point
 			,&direction
 			,&gamma
 			,&rho
-			,&alpha_max
+			,&mut alpha
         );
 
 
