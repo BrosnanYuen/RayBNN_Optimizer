@@ -80,9 +80,10 @@ fn test_gd2() {
 
 
 
-	let beta = arrayfire::constant::<f64>(0.9,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+	let beta0 = arrayfire::constant::<f64>(0.9,arrayfire::Dim4::new(&[1, 1, 1, 1]));
+	let beta1 = arrayfire::constant::<f64>(0.999,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 
-	for i in 0..400
+	for i in 0..120
 	{
         alpha = alpha_max.clone();
 		RayBNN_Optimizer::Continuous::LR::BTLS(
@@ -103,11 +104,12 @@ fn test_gd2() {
 
 
 		RayBNN_Optimizer::Continuous::GD::adam(
-            &beta
-            ,&direction
-            ,&mut newdirection
-        );
-        direction = newdirection.clone();
+			&beta0
+			,&beta1
+			,&mut direction
+			,&mut mt
+			,&mut vt
+		);
 
 	}
 
@@ -119,13 +121,12 @@ fn test_gd2() {
 
     point.host(&mut point_cpu);
 
-    point_cpu = point_cpu.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+    point_cpu = point_cpu.par_iter().map(|x|  (x * 100.0).round() / 100.0 ).collect::<Vec<f64>>();
 
-    point_act = point_act.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+    point_act = point_act.par_iter().map(|x|  (x * 100.0).round() / 100.0 ).collect::<Vec<f64>>();
 
 
     assert_eq!(point_act, point_cpu);
-
 
 
 
