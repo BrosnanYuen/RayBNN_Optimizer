@@ -1,11 +1,11 @@
 [package]
 name = "RayBNN_Optimizer"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Brosnan Yuen <brosnanyuen@gmail.com>"]
 edition = "2021"
 description = "Gradient Descent Optimizers and Genetic Algorithms using GPUs, CPUs, and FPGAs via CUDA, OpenCL, and oneAPI"
 readme = "README.md"
-repository = "https://github.com/BrosnanYuen/RayBNN_Cell"
+repository = "https://github.com/BrosnanYuen/RayBNN_Optimizer"
 keywords = ["gradient-descent","optimizer","optimization","CUDA","OpenCL"]
 license = "GPL-3.0-only"
 categories = ["math"]
