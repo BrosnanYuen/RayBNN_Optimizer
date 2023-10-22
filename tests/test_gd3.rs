@@ -21,19 +21,21 @@ fn test_gd2() {
 
 
 
-
+	//Define Starting Point for optimization
 	let x0_cpu = vec![0.1, 0.4, 0.5,   -1.2, 0.7];
 	let x0_dims = arrayfire::Dim4::new(&[1, x0_cpu.len() as u64, 1, 1]);
 	let x0 = arrayfire::Array::new(&x0_cpu, x0_dims);
 
+	//Define the loss function
 	let y_cpu = vec![-1.1, 0.4, 2.0,    2.1, 4.0];
 	let y = arrayfire::Array::new(&y_cpu, x0_dims);
 
-
+	//Define the loss function
 	let loss = |yhat: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
 		RayBNN_Optimizer::Continuous::Loss::MSE(yhat, &y)
     };
 
+	//Define the gradient of the loss function
 	let loss_grad = |yhat: &arrayfire::Array<f64>| -> arrayfire::Array<f64> {
 		RayBNN_Optimizer::Continuous::Loss::MSE_grad(yhat, &y)
 	};
@@ -67,9 +69,11 @@ fn test_gd2() {
 	let beta0 = arrayfire::constant::<f64>(0.9,single_dims);
 	let beta1 = arrayfire::constant::<f64>(0.999,single_dims);
 
+	//Optimization Loop
 	for i in 0..120
 	{
         alpha = alpha_max.clone();
+		//Automatically Determine Optimal Step Size using BTLS
 		RayBNN_Optimizer::Continuous::LR::BTLS(
 			loss
 			,loss_grad
@@ -80,13 +84,13 @@ fn test_gd2() {
 			,&mut alpha
         );
 
-
+		//Update current point
 		point = point.clone()  + alpha*direction.clone();
 		direction = -loss_grad(&point);
 
 
 
-
+		//Use ADAM optimizer
 		RayBNN_Optimizer::Continuous::GD::adam(
 			&beta0
 			,&beta1
