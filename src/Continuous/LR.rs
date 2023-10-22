@@ -37,13 +37,13 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> + arrayfire::Const
 
 
 
-
+		let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
 		let alpha_size = alpha_vec.len();
 		
 
 		for i in 0..alpha_size
 		{
-			(*alpha) = arrayfire::constant(alpha_vec[i], arrayfire::Dim4::new(&[1,1,1,1]));
+			(*alpha) = arrayfire::constant(alpha_vec[i], single_dims);
 			next_point = init_point.clone() + (alpha.clone())*direction.clone();
 			f0  = loss(&next_point);
 			f1  = init_loss.clone() + (alpha.clone())*t0.clone();
