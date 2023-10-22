@@ -13,7 +13,7 @@ use rayon::prelude::*;
 
 
 #[test]
-fn test_loss() {
+fn test_gd() {
     arrayfire::set_backend(BACK_END);
     arrayfire::set_device(DEVICE);
 
