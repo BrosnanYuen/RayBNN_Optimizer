@@ -66,18 +66,11 @@ let mut alpha = arrayfire::constant::<f64>(1.0,single_dims);
 
 let alpha_max = arrayfire::constant::<f64>(1.0,single_dims);
 
-let v = 30;
-let N_dims = arrayfire::Dim4::new(&[v,1,1,1]);
-let mut alpha_arr = arrayfire::constant::<f64>(0.5,N_dims);
-
 let rho = arrayfire::constant::<f64>(0.1,single_dims);
 
-let exponent = arrayfire::iota::<f64>(N_dims,single_dims);
-
-alpha_arr = arrayfire::pow(&alpha_arr,&exponent, false);
-
-let mut alpha_vec = vec!(f64::default();alpha_arr.elements());
-alpha_arr.host(&mut alpha_vec);
+//Create alpha values to sweep through
+let v = 30;
+let alpha_vec = RayBNN_Optimizer::Continuous::LR::create_alpha_vec::<f64>(v, 1.0, 0.5);
 
 
 let beta0 = arrayfire::constant::<f64>(0.9,single_dims);
