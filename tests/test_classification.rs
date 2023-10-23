@@ -12,6 +12,19 @@ use rayon::prelude::*;
 
 
 
+const TEN: f64 = 10.0;
+
+pub fn rscalar(
+	input: f64,
+	decimal: u64
+	) -> f64  {
+
+	let places = TEN.powf(decimal as f64);
+	(input * places).round() / places
+}
+
+
+
 #[test]
 fn test_classification() {
     arrayfire::set_backend(BACK_END);
@@ -75,6 +88,94 @@ fn test_classification() {
 
 
     assert_eq!(confusion_act, confusion_cpu);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //TP = 6     TN = 3     FP = 1      FN = 2
+    let y_cpu: Vec<u32> =    vec![1,1,1,1,1,1,1,1,0,0,0,0];
+    let y = arrayfire::Array::new(&y_cpu, arrayfire::Dim4::new(&[y_cpu.len() as u64, 1, 1, 1]));
+
+    let yhat_cpu: Vec<u32> = vec![0,0,1,1,1,1,1,1,0,0,0,1];
+    let yhat = arrayfire::Array::new(&yhat_cpu, arrayfire::Dim4::new(&[yhat_cpu.len() as u64, 1, 1, 1]));
+
+
+    let result = RayBNN_Optimizer::Discrete::Classification::precision_recall_f1_MCC_binary(&yhat,&y);
+
+    let mut result_cpu = vec!(f64::default();result.elements());
+    result.host(&mut result_cpu);
+
+    let precision = result_cpu[0];
+    let recall = result_cpu[1];
+    let f1 = result_cpu[2];
+    let MCC = result_cpu[3];
+
+
+    assert_eq!( rscalar(precision,6) ,  rscalar(0.8571428571428571,6) );
+    assert_eq!( rscalar(recall,6) ,  rscalar(0.75,6) );
+    assert_eq!( rscalar(f1,6) ,  rscalar(0.7999999999999999,6) );
+    assert_eq!( rscalar(MCC,6) ,  rscalar(0.47809144373375745,6) );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let y_cpu: Vec<u32> =    vec![0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1];
+    let y = arrayfire::Array::new(&y_cpu, arrayfire::Dim4::new(&[y_cpu.len() as u64, 1, 1, 1]));
+
+    let yhat_cpu: Vec<u32> = vec![1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1];
+    let yhat = arrayfire::Array::new(&yhat_cpu, arrayfire::Dim4::new(&[yhat_cpu.len() as u64, 1, 1, 1]));
+
+
+    let result = RayBNN_Optimizer::Discrete::Classification::precision_recall_f1_MCC_binary(&yhat,&y);
+
+
+    let mut result_cpu = vec!(f64::default();result.elements());
+    result.host(&mut result_cpu);
+
+    let precision = result_cpu[0];
+    let recall = result_cpu[1];
+    let f1 = result_cpu[2];
+    let MCC = result_cpu[3];
+
+    assert_eq!( rscalar(precision,6) ,  rscalar(0.6,6) );
+    assert_eq!( rscalar(recall,6) ,  rscalar(0.8571428571428571,6) );
+    assert_eq!( rscalar(f1,6) ,  rscalar(0.7058823529411764,6) );
+    assert_eq!( rscalar(MCC,6) ,  rscalar(0.37796447300922725,6) );
+
+
 
 
 
