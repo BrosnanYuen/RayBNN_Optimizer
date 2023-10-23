@@ -80,12 +80,12 @@ pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
 
 	*counter =   (*counter) + 1;
 
-
+	let tmp_counter = (*counter).clone();
+	
 	let mut alpha_cpu = min_alpha;
-
-	if (*counter)  >  start_epoch
+	if tmp_counter  >  start_epoch
 	{
-		alpha_cpu =  min_alpha  +   (ONEHALF_F64*(max_alpha - min_alpha)*(ONE_F64 +   (  ( ((*counter) as f64) / window_epoch)*std::f64::consts::PI  ).cos())   );
+		alpha_cpu =  min_alpha  +   (ONEHALF_F64*(max_alpha - min_alpha)*(ONE_F64 +   (  ( (tmp_counter as f64) / window_epoch)*std::f64::consts::PI  ).cos())   );
 	}
 
 	let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
