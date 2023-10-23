@@ -4,6 +4,11 @@ use arrayfire;
 
 
 
+
+
+
+
+
 pub fn confusion_matrix(
 	yhat: &arrayfire::Array<u32>,
 	y: &arrayfire::Array<u32>,
@@ -27,6 +32,12 @@ pub fn confusion_matrix(
 
 		confusion
 }
+
+
+
+
+
+
 
 
 
