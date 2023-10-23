@@ -2,7 +2,7 @@ use arrayfire;
 
 
 
-
+const TWO_F64: f64 = 2.0;
 
 
 
@@ -39,8 +39,7 @@ pub fn confusion_matrix(
 
 
 
-
-pub fn precision_recall_f1_MCC_binary<Z: arrayfire::FloatingPoint>(
+pub fn precision_recall_f1_MCC_binary(
 	yhat: &arrayfire::Array<u32>,
 	y: &arrayfire::Array<u32>) -> arrayfire::Array<f64>
 	{
@@ -68,12 +67,19 @@ pub fn precision_recall_f1_MCC_binary<Z: arrayfire::FloatingPoint>(
 	let R = TP/(TP + FN);
 
 
-	let result: Vec<f64> = vec![ P , R ,  two*((P*R)/(P + R)),  (TP*TN  -  FP*FN)/( ( (TP+FP)*(TP+FN)*(TN+FP)*(TN+FN) ).sqrt()  ) ];
+	let result: Vec<f64> = vec![ P , R ,  TWO_F64*((P*R)/(P + R)),  (TP*TN  -  FP*FN)/( ( (TP+FP)*(TP+FN)*(TN+FP)*(TN+FN) ).sqrt()  ) ];
 
 
 
 	arrayfire::Array::new(&result, arrayfire::Dim4::new(&[result.len() as u64, 1, 1, 1]))
 }
+
+
+
+
+
+
+
 
 
 
