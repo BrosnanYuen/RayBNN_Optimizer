@@ -6,6 +6,39 @@ const ONEHALF_F64: f64 = 0.5;
 const ONE_F64: f64 = 1.0;
 
 
+
+pub fn create_alpha_vec<Z: arrayfire::FloatingPoint >(
+	num: u64,
+	alpha: f64,
+	gamma: f64,
+	) -> Vec<Z>
+{
+
+	let N_dims = arrayfire::Dim4::new(&[num,1,1,1]);
+    let mut alpha_arr = arrayfire::constant::<f64>(gamma,N_dims);
+
+	let repeat_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	let exponent = arrayfire::iota::<f64>(N_dims,repeat_dims);
+
+	let multiplier = arrayfire::constant::<f64>(alpha,repeat_dims);
+
+	alpha_arr = multiplier*arrayfire::pow(&alpha_arr,&exponent, false);
+
+
+	let alpha_arr = alpha_arr.cast::<Z>();
+
+	let mut alpha_vec = vec!(Z::default();alpha_arr.elements());
+	alpha_arr.host(&mut alpha_vec);
+
+
+	alpha_vec
+}
+
+
+
+
+
+
 pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> + arrayfire::ConstGenerator<OutType = Z> >(
 	loss: impl Fn(&arrayfire::Array<Z>) -> arrayfire::Array<Z>
 	,loss_grad: impl Fn(&arrayfire::Array<Z>) -> arrayfire::Array<Z>
