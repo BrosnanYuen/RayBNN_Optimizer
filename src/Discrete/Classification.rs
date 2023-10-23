@@ -80,6 +80,49 @@ pub fn precision_recall_f1_MCC_binary(
 
 
 
+pub fn precision_recall_f1_MCC_multi(
+	yhat: &arrayfire::Array<u32>,
+	y: &arrayfire::Array<u32>,
+	weights: &arrayfire::Array<f64>,
+	label_num: u64) -> arrayfire::Array<f64>
+	{
+
+
+	let mut count:u32 = 0;
+
+	let mut temp_yhat = arrayfire::eq(yhat,&count,false).cast::<u32>();
+
+	let mut temp_y = arrayfire::eq(y,&count,false).cast::<u32>();
+
+	let mut result = precision_recall_f1_MCC_binary(
+		&temp_yhat,
+		&temp_y);
+
+
+
+	count = count + 1;
+
+	while count < (label_num as u32)
+	{
+		temp_yhat = arrayfire::eq(yhat,&count,false).cast::<u32>();
+
+		temp_y = arrayfire::eq(y,&count,false).cast::<u32>();
+
+		let temp_result = precision_recall_f1_MCC_binary(
+		&temp_yhat,
+		&temp_y);
+
+
+
+		result = arrayfire::join(1, &result, &temp_result);
+
+		count = count + 1;
+	}
+
+
+	arrayfire::mean_weighted(&result, weights, 1)
+}
+
 
 
 
