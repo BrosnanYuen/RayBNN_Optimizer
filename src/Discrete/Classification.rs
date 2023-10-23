@@ -47,7 +47,8 @@ pub fn precision_recall_f1_MCC_binary(
 	let con_matrix = confusion_matrix(
 		yhat,
 		y,
-		2).cast::<f64>();
+		2
+    ).cast::<f64>();
 
 	let mut con_matrix_cpu = vec!(f64::default();con_matrix.elements());
 
@@ -96,7 +97,8 @@ pub fn precision_recall_f1_MCC_multi(
 
 	let mut result = precision_recall_f1_MCC_binary(
 		&temp_yhat,
-		&temp_y);
+		&temp_y
+    );
 
 
 
@@ -109,8 +111,9 @@ pub fn precision_recall_f1_MCC_multi(
 		temp_y = arrayfire::eq(y,&count,false).cast::<u32>();
 
 		let temp_result = precision_recall_f1_MCC_binary(
-		&temp_yhat,
-		&temp_y);
+            &temp_yhat,
+            &temp_y
+        );
 
 
 
