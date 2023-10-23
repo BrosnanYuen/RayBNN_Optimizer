@@ -68,10 +68,8 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> + arrayfire::Const
 
 
 
-pub fn cosine_annealing(
-	control_state: &mut neural_controller_type
-	,alpha0: &mut f64
-	,alpha1: &mut f64)
+pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
+	,alpha0: &mut arrayfire::Array<Z>)
 {
 
 	let window_epoch = (*control_state).window_epoch;
