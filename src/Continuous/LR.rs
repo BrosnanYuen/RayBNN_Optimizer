@@ -69,31 +69,24 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> + arrayfire::Const
 
 
 pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
-	,alpha0: &mut arrayfire::Array<Z>)
+	start_epoch: u64,
+	window_epoch: u64,
+	min_alpha: &arrayfire::Array<Z>,
+	max_alpha: &arrayfire::Array<Z>,
+
+	counter: &mut u64,
+	alpha: &mut arrayfire::Array<Z>)
 {
 
-	let window_epoch = (*control_state).window_epoch;
-	let min_alpha = (*control_state).min_alpha;
-	let max_alpha = (*control_state).max_alpha;
+	*counter =   (*counter) + 1;
 
-
-
-	(*control_state).counter0 = (  (*control_state).counter0 + 1);
-
-
-	if (*control_state).counter0  >  (*control_state).start_epoch
+	if (*counter)  >  start_epoch
 	{
-		(*control_state).counter1 = (  (*control_state).counter1 + 1) % window_epoch;
-
-		*alpha0  =    min_alpha  +   (onehalf*(max_alpha - min_alpha)*(one +   (  ( ((*control_state).counter1 as f64) / (window_epoch as f64))*std::f64::consts::PI  ).cos())   );
-
-		*alpha1  = *alpha0;
+		*alpha  =    min_alpha  +   (onehalf*(max_alpha - min_alpha)*(one +   (  ( ((*control_state).counter1 as f64) / (window_epoch as f64))*std::f64::consts::PI  ).cos())   );
 	}
 	else
 	{
-		*alpha0  =  min_alpha;
-
-		*alpha1  = *alpha0;
+		*alpha  =  min_alpha.clone();
 	}
 
 
