@@ -40,6 +40,43 @@ pub fn confusion_matrix(
 
 
 
+pub fn precision_recall_f1_MCC_binary<Z: arrayfire::FloatingPoint>(
+	yhat: &arrayfire::Array<u32>,
+	y: &arrayfire::Array<u32>) -> arrayfire::Array<f64>
+	{
+
+	let con_matrix = confusion_matrix(
+		yhat,
+		y,
+		2).cast::<f64>();
+
+	let mut con_matrix_cpu = vec!(f64::default();con_matrix.elements());
+
+	con_matrix.host(&mut con_matrix_cpu);
+
+
+	
+
+	let TP = con_matrix_cpu[3];
+	let FP = con_matrix_cpu[2];
+	let FN = con_matrix_cpu[1];
+	let TN = con_matrix_cpu[0];
+
+
+
+	let P = TP/(TP + FP);
+	let R = TP/(TP + FN);
+
+
+	let result: Vec<f64> = vec![ P , R ,  two*((P*R)/(P + R)),  (TP*TN  -  FP*FN)/( ( (TP+FP)*(TP+FN)*(TN+FP)*(TN+FN) ).sqrt()  ) ];
+
+
+
+	arrayfire::Array::new(&result, arrayfire::Dim4::new(&[result.len() as u64, 1, 1, 1]))
+}
+
+
+
 
 
 
