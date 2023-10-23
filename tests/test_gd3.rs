@@ -11,7 +11,7 @@ use rayon::prelude::*;
 
 
 #[test]
-fn test_gd2() {
+fn test_gd3() {
     arrayfire::set_backend(BACK_END);
     arrayfire::set_device(DEVICE);
 
