@@ -1,9 +1,9 @@
 use arrayfire;
 
 
+const ONEHALF_F64: f64 = 0.5;
 
-
-
+const ONE_F64: f64 = 1.0;
 
 
 pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> + arrayfire::ConstGenerator<OutType = Z> >(
@@ -70,9 +70,9 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> + arrayfire::Const
 
 pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
 	start_epoch: u64,
-	window_epoch: u64,
-	min_alpha: &arrayfire::Array<Z>,
-	max_alpha: &arrayfire::Array<Z>,
+	window_epoch: f64,
+	min_alpha: f64,
+	max_alpha: f64,
 
 	counter: &mut u64,
 	alpha: &mut arrayfire::Array<Z>)
@@ -80,16 +80,16 @@ pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
 
 	*counter =   (*counter) + 1;
 
+
+	let mut alpha_cpu = min_alpha;
+
 	if (*counter)  >  start_epoch
 	{
-		*alpha  =    min_alpha  +   (onehalf*(max_alpha - min_alpha)*(one +   (  ( ((*control_state).counter1 as f64) / (window_epoch as f64))*std::f64::consts::PI  ).cos())   );
-	}
-	else
-	{
-		*alpha  =  min_alpha.clone();
+		alpha_cpu =  min_alpha  +   (ONEHALF_F64*(max_alpha - min_alpha)*(ONE_F64 +   (  ( ((*counter) as f64) / window_epoch)*std::f64::consts::PI  ).cos())   );
 	}
 
-
+	let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	*alpha  = arrayfire::constant(alpha_cpu, single_dims).cast::<Z>();
 }
 
 
