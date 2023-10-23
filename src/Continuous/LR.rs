@@ -68,6 +68,43 @@ pub fn BTLS<Z: arrayfire::FloatingPoint<AggregateOutType = Z> + arrayfire::Const
 
 
 
+pub fn cosine_annealing(
+	control_state: &mut neural_controller_type
+	,alpha0: &mut f64
+	,alpha1: &mut f64)
+{
+
+	let window_epoch = (*control_state).window_epoch;
+	let min_alpha = (*control_state).min_alpha;
+	let max_alpha = (*control_state).max_alpha;
+
+
+
+	(*control_state).counter0 = (  (*control_state).counter0 + 1);
+
+
+	if (*control_state).counter0  >  (*control_state).start_epoch
+	{
+		(*control_state).counter1 = (  (*control_state).counter1 + 1) % window_epoch;
+
+		*alpha0  =    min_alpha  +   (onehalf*(max_alpha - min_alpha)*(one +   (  ( ((*control_state).counter1 as f64) / (window_epoch as f64))*std::f64::consts::PI  ).cos())   );
+
+		*alpha1  = *alpha0;
+	}
+	else
+	{
+		*alpha0  =  min_alpha;
+
+		*alpha1  = *alpha0;
+	}
+
+
+}
+
+
+
+
+
 
 
 
