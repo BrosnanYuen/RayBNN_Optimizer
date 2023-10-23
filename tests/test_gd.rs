@@ -66,21 +66,9 @@ fn test_gd() {
 
     let alpha_max = arrayfire::constant::<f64>(1.0,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 
-	let N_dims = arrayfire::Dim4::new(&[v,1,1,1]);
-    let mut alpha_arr = arrayfire::constant::<f64>(0.5,N_dims);
-
     let rho = arrayfire::constant::<f64>(0.1,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 
-
-	let repeat_dims = arrayfire::Dim4::new(&[1,1,1,1]);
-	let exponent = arrayfire::iota::<f64>(N_dims,repeat_dims);
-
-	alpha_arr = arrayfire::pow(&alpha_arr,&exponent, false);
-
-	let mut alpha_vec = vec!(f64::default();alpha_arr.elements());
-	alpha_arr.host(&mut alpha_vec);
-
-
+	let alpha_vec = RayBNN_Optimizer::Continuous::LR::create_alpha_vec::<f64>(v, 1.0, 0.5);
 
 	let beta = arrayfire::constant::<f64>(0.9,arrayfire::Dim4::new(&[1, 1, 1, 1]));
 
