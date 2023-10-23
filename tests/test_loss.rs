@@ -292,4 +292,25 @@ fn test_loss() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    let num = 11;
+    let mut alpha_vec = RayBNN_Optimizer::Continuous::LR::create_alpha_vec::<f64>(num, 100.0, 0.5);
+    assert_eq!(alpha_vec.len() as u64,num);
+
+    alpha_vec = alpha_vec.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+
+    let alpha_act = vec![100.0, 50.0, 25.0, 12.5, 6.25, 3.125, 1.5625, 0.78125, 0.390625, 0.195312, 0.097656];
+    assert_eq!(alpha_vec,alpha_act);
+
 }
