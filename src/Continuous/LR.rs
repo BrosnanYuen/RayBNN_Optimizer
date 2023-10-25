@@ -137,6 +137,7 @@ pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
 
 
 pub fn decrease_on_plateau(
+	window_epoch: u64,
 	loss_val: f64,
 	gamma: f64,
 
@@ -158,16 +159,14 @@ pub fn decrease_on_plateau(
 
 
 
-
-	if ((*control_state).counter0  > (*control_state).window_epoch)
+	if ((*counter)  > window_epoch)
 	{
-		*alpha0 =  (*alpha0)*((*control_state).decrease_alpha);
-		*alpha1 =  (*alpha1)*((*control_state).decrease_alpha);
+		*alpha =  (*alpha)*gamma;
 		(*control_state).counter0 = 0;
 	}
 	else
 	{
-		(*control_state).counter0 = (*control_state).counter0  + 1;
+		*counter = (*counter)  + 1;
 	}
 
 
