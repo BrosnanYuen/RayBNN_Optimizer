@@ -134,3 +134,53 @@ pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
 
 
 
+
+
+pub fn plateau(
+	loss_val: f64
+	,control_state: &mut neural_controller_type
+	,alpha0: &mut f64
+	,alpha1: &mut f64)
+{
+
+	(*control_state).mean_loss = 0.9*((*control_state).mean_loss) + 0.1*loss_val;
+
+	
+	if ((*control_state).mean_loss*1.05 < (*control_state).min_loss)
+	{
+		(*control_state).min_loss = (*control_state).mean_loss;
+		(*control_state).counter0 = 0;
+	}
+
+
+
+
+	if ((*control_state).counter0  > (*control_state).window_epoch)
+	{
+		*alpha0 =  (*alpha0)*((*control_state).decrease_alpha);
+		*alpha1 =  (*alpha1)*((*control_state).decrease_alpha);
+		(*control_state).counter0 = 0;
+	}
+	else
+	{
+		(*control_state).counter0 = (*control_state).counter0  + 1;
+	}
+
+
+
+	
+	if (*alpha0 <  (*control_state).min_alpha) && (*alpha1 > 0.0)
+	{
+		*alpha0 = (*control_state).max_alpha;
+		*alpha1 =  0.0;
+	}
+	
+
+}
+
+
+
+
+
+
+
