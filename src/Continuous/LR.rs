@@ -137,10 +137,12 @@ pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
 
 
 pub fn decrease_on_plateau(
-	loss_val: f64
-	,control_state: &mut neural_controller_type
-	,alpha0: &mut f64
-	,alpha1: &mut f64)
+	loss_val: f64,
+	mean_loss: f64,
+	min_loss: f64,
+	gamma: f64,
+
+	alpha: &mut f64)
 {
 
 	(*control_state).mean_loss = 0.9*((*control_state).mean_loss) + 0.1*loss_val;
