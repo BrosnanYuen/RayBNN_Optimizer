@@ -136,7 +136,7 @@ pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
 
 
 
-pub fn plateau(
+pub fn decrease_on_plateau(
 	loss_val: f64
 	,control_state: &mut neural_controller_type
 	,alpha0: &mut f64
