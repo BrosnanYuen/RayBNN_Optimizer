@@ -143,16 +143,17 @@ pub fn decrease_on_plateau(
 
 	mean_loss: &mut f64,
 	min_loss: &mut f64,
+	counter: &mut u64,
 	alpha: &mut f64)
 {
 
-	*mean_loss = 0.9*(*mean_loss) + 0.1*loss_val;
+	*mean_loss = (*mean_loss)*0.9 + 0.1*loss_val;
 
 	
-	if ((*control_state).mean_loss*1.05 < (*control_state).min_loss)
+	if ((*mean_loss)*1.05 < (*min_loss))
 	{
-		(*control_state).min_loss = (*control_state).mean_loss;
-		(*control_state).counter0 = 0;
+		*min_loss = *mean_loss;
+		*counter = 0;
 	}
 
 
