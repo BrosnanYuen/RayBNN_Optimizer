@@ -138,14 +138,15 @@ pub fn cosine_annealing<Z: arrayfire::FloatingPoint >(
 
 pub fn decrease_on_plateau(
 	loss_val: f64,
-	mean_loss: f64,
-	min_loss: f64,
 	gamma: f64,
 
+
+	mean_loss: &mut f64,
+	min_loss: &mut f64,
 	alpha: &mut f64)
 {
 
-	(*control_state).mean_loss = 0.9*((*control_state).mean_loss) + 0.1*loss_val;
+	*mean_loss = 0.9*(*mean_loss) + 0.1*loss_val;
 
 	
 	if ((*control_state).mean_loss*1.05 < (*control_state).min_loss)
