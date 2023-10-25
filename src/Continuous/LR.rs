@@ -162,7 +162,7 @@ pub fn decrease_on_plateau(
 	if ((*counter)  > window_epoch)
 	{
 		*alpha =  (*alpha)*gamma;
-		(*control_state).counter0 = 0;
+		*counter = 0;
 	}
 	else
 	{
